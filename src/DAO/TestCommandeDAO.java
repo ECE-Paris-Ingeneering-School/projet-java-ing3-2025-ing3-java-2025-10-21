@@ -9,13 +9,10 @@ public class TestCommandeDAO {
         CommandeDAO dao = new CommandeDAO();
 
         // Création d'une nouvelle commande pour le client avec l'id 1
-        // Tu peux changer l'id selon ce que tu as dans ta base
-        Commande nouvelleCommande = new Commande(1); // idClient = 1
+        Commande nouvelleCommande = new Commande(1); 
 
-        // Ajout de la commande dans la base
+        // On ajoute la Commande
         dao.ajouterCommande(nouvelleCommande);
-
-        // Récupération et affichage de toutes les commandes
         List<Commande> commandes = dao.listerCommandes();
         for (Commande c : commandes) {
             System.out.println(c);
