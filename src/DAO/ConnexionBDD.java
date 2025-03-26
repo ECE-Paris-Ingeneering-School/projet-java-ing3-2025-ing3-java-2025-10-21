@@ -9,11 +9,17 @@ public class ConnexionBDD {
     private static final String UTILISATEUR = "root";
     private static final String MOT_DE_PASSE = "";
 
+    // ✅ Méthode manquante à ajouter
+    public static Connection getConnexion() throws SQLException {
+        return DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
+    }
+
+    // Test manuel (facultatif)
     public static void main(String[] args) {
-        try (Connection connexion = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE)) {
-            System.out.println("✅ La Connexion à la base de données EST REUSSIEEEEEEEEEE !✅ !✅!✅ !✅ ! ✅!");
+        try (Connection connexion = getConnexion()) {
+            System.out.println("✅ Connexion OK !");
         } catch (SQLException e) {
-            System.out.println("❌ ❌ ❌LA CONNEXION A ECHOUERRRRRRR " + e.getMessage());
+            System.out.println("❌ Connexion échouée : " + e.getMessage());
         }
     }
 }
