@@ -1,0 +1,69 @@
+package controller;
+
+import model.Client;
+import view.gestionclientvue;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
+
+public class gestionclientcontroller {
+
+    private gestionclientvue vue;
+    private List<Client> clients;
+
+    public gestionclientcontroller() {
+        this.vue = new gestionclientvue();
+        this.clients = new ArrayList<>();
+
+        chargerClientsFictifs();
+        remplirTableau();
+
+        vue.ajouterListenerAjouter(e -> {
+            String nom = JOptionPane.showInputDialog("Nom du client :");
+            String email = JOptionPane.showInputDialog("Email :");
+            if (nom != null && email != null) {
+                clients.add(new Client(nom, email));
+                remplirTableau();
+            }
+        });
+
+        vue.ajouterListenerModifier(e -> {
+            int ligne = vue.getTableClients().getSelectedRow();
+            if (ligne == -1) {
+                JOptionPane.showMessageDialog(vue, "Sélectionnez un client à modifier.");
+                return;
+            }
+            Client c = clients.get(ligne);
+            String nouveauNom = JOptionPane.showInputDialog("Nouveau nom :", c.getNom());
+            String nouveauEmail = JOptionPane.showInputDialog("Nouvel email :", c.getEmail());
+            c.setNom(nouveauNom);
+            c.setEmail(nouveauEmail);
+            remplirTableau();
+        });
+
+        vue.ajouterListenerSupprimer(e -> {
+            int ligne = vue.getTableClients().getSelectedRow();
+            if (ligne == -1) {
+                JOptionPane.showMessageDialog(vue, "Sélectionnez un client à supprimer.");
+                return;
+            }
+            clients.remove(ligne);
+            remplirTableau();
+        });
+    }
+
+    private void remplirTableau() {
+        DefaultTableModel model = (DefaultTableModel) vue.getTableClients().getModel();
+        model.setRowCount(0);
+        for (Client c : clients) {
+            model.addRow(new Object[]{c.getNom(), c.getEmail()});
+        }
+    }
+
+    private void chargerClientsFictifs() {
+        clients.add(new Client("Alice Dupont", "alice@mail.com"));
+        clients.add(new Client("Bob Martin", "bob@mail.com"));
+    }
+}
