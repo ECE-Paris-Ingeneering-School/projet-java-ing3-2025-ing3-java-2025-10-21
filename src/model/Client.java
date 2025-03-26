@@ -22,6 +22,14 @@ public class Client {
         this.typeClient = typeClient;
     }
 
+    // ✅ Constructeur simplifié pour la gestion des clients (vue admin)
+    public Client(String nom, String email) {
+        this.nom = nom;
+        this.email = email;
+        this.motDePasse = "";
+        this.typeClient = "standard";
+    }
+
     // Getters
     public int getId() { return id; }
     public String getNom() { return nom; }
