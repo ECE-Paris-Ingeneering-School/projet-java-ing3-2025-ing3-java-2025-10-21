@@ -1,6 +1,6 @@
 package view;
 
-import DAO.StatistiqueDAO;
+import DAO.StatscommandeDAO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -10,14 +10,15 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public class Statsvue extends JFrame {
 
-    private StatistiqueDAO statDAO;
+    private StatscommandeDAO statDAO;
 
     public Statsvue() {
         super("Statistiques des ventes");
-        statDAO = new StatistiqueDAO();
+        statDAO = new StatscommandeDAO();
 
         setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,7 +34,7 @@ public class Statsvue extends JFrame {
     }
 
     private JPanel creerGraphiqueVentesTotales() {
-        double totalVentes = 12547.80; // 💡 À remplacer plus tard par une vraie requête SQL
+        double totalVentes = statDAO.calculerVentesTotales();
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(totalVentes, "Total", "Ventes");
@@ -51,11 +52,11 @@ public class Statsvue extends JFrame {
 
     private JPanel creerGraphiqueProduitsVendus() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        Map<String, Integer> stats = statDAO.getQuantitesParArticle();
 
-        // 🔧 Données fictives (remplacer plus tard par une vraie jointure SQL)
-        dataset.addValue(120, "Bic", "Briquet");
-        dataset.addValue(85, "Bic", "Stylo");
-        dataset.addValue(40, "Papier", "Cahier");
+        for (Map.Entry<String, Integer> entry : stats.entrySet()) {
+            dataset.addValue(entry.getValue(), "Articles", entry.getKey());
+        }
 
         JFreeChart chart = ChartFactory.createBarChart(
                 "Produits les plus vendus",
@@ -70,11 +71,11 @@ public class Statsvue extends JFrame {
 
     private JPanel creerGraphiqueParClient() {
         DefaultPieDataset dataset = new DefaultPieDataset();
+        Map<String, Double> stats = statDAO.getVentesParClient();
 
-        // 🔧 Données fictives (remplacer plus tard par des agrégations SQL)
-        dataset.setValue("Alice", 2300);
-        dataset.setValue("Bob", 1800);
-        dataset.setValue("Chloe", 900);
+        for (Map.Entry<String, Double> entry : stats.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
 
         JFreeChart chart = ChartFactory.createPieChart(
                 "Répartition des ventes par client",
