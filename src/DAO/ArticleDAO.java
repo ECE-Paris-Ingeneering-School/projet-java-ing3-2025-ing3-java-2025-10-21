@@ -5,12 +5,12 @@ import model.Article;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-// acces aux Articles
+
 public class ArticleDAO {
 
     private static final String URL = "jdbc:mysql://localhost:3306/shopping_db";
     private static final String UTILISATEUR = "root";
-    private static final String MOT_DE_PASSE = ""; // à adapter si tu mets un mot de passe
+    private static final String MOT_DE_PASSE = ""; // Mets ton mot de passe ici si besoin
 
     public void ajouterArticle(Article article) {
         String sql = "INSERT INTO article(nom, marque, prix_unitaire, prix_gros, seuil_gros) VALUES (?, ?, ?, ?, ?)";
@@ -18,7 +18,6 @@ public class ArticleDAO {
         try (Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Remplacement des ? par les valeurs réelles
             stmt.setString(1, article.getNom());
             stmt.setString(2, article.getMarque());
             stmt.setDouble(3, article.getPrixUnitaire());
@@ -26,9 +25,55 @@ public class ArticleDAO {
             stmt.setInt(5, article.getSeuilGros());
 
             stmt.executeUpdate();
-            System.out.println("✅ Article à bien été ajoutéé  ! ! ! ");
+            System.out.println("✅ Article ajouté avec succès !");
         } catch (SQLException e) {
-            System.out.println("❌❌❌ Erreur lors de l'ajout " + e.getMessage());
+            System.out.println("❌ Erreur lors de l'ajout : " + e.getMessage());
+        }
+    }
+
+    public void supprimerArticle(int id) {
+        String sql = "DELETE FROM article WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            int rowsDeleted = stmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("✅ Article supprimé avec succès !");
+            } else {
+                System.out.println("⚠️ Aucun article trouvé avec l’ID donné.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur lors de la suppression : " + e.getMessage());
+        }
+    }
+
+    public void modifierArticle(Article article) {
+        String sql = "UPDATE article SET nom = ?, marque = ?, prix_unitaire = ?, prix_gros = ?, seuil_gros = ? WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, article.getNom());
+            stmt.setString(2, article.getMarque());
+            stmt.setDouble(3, article.getPrixUnitaire());
+            stmt.setDouble(4, article.getPrixGros());
+            stmt.setInt(5, article.getSeuilGros());
+            stmt.setInt(6, article.getId());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("✅ Article modifié avec succès !");
+            } else {
+                System.out.println("⚠️ Aucun article trouvé avec l’ID donné.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur lors de la modification : " + e.getMessage());
         }
     }
 
@@ -53,7 +98,7 @@ public class ArticleDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌❌❌ Erreurrrrr La récupération n'a pas été effectué " + e.getMessage());
+            System.out.println("❌ Erreur lors de la récupération : " + e.getMessage());
         }
 
         return liste;
