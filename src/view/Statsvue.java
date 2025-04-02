@@ -31,6 +31,8 @@ public class Statsvue extends JFrame {
         onglets.addTab("Par client", creerGraphiqueParClient());
 
         add(onglets);
+
+
     }
 
     private JPanel creerGraphiqueVentesTotales() {

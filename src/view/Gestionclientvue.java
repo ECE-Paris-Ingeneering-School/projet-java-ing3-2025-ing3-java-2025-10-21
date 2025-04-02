@@ -50,6 +50,12 @@ public class Gestionclientvue extends JFrame {
         JButton boutonModifier = new JButton("Modifier");
         JButton boutonSupprimer = new JButton("Supprimer");
         JButton boutonRafraichir = new JButton("Rafraîchir");
+        JButton boutonRetour = new JButton("↩ Retour au menu");
+        boutonRetour.addActionListener(e -> {
+            dispose();
+            new Menuadminvue().setVisible(true);
+        });
+
 
         panneauBoutons.add(boutonAjouter);
         panneauBoutons.add(boutonModifier);
@@ -60,6 +66,7 @@ public class Gestionclientvue extends JFrame {
         boutonModifier.addActionListener(e -> modifierClient());
         boutonSupprimer.addActionListener(e -> supprimerClient());
         boutonRafraichir.addActionListener(e -> chargerClients());
+        panneauBoutons.add(boutonRetour);
 
         // Layout principal
         getContentPane().add(scrollPane, BorderLayout.NORTH);

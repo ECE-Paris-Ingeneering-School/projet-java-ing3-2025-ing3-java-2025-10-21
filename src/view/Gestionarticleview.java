@@ -55,11 +55,19 @@ public class Gestionarticleview extends JFrame {
         JButton boutonModifier = new JButton("Modifier");
         JButton boutonSupprimer = new JButton("Supprimer");
         JButton boutonRafraichir = new JButton("Rafraîchir");
+        JButton boutonRetour = new JButton("↩ Retour au menu");
+        boutonRetour.addActionListener(e -> {
+            dispose(); // ferme la fenêtre actuelle
+            new Menuadminvue().setVisible(true); // ouvre le menu principal
+        });
+
 
         panneauBoutons.add(boutonAjouter);
         panneauBoutons.add(boutonModifier);
         panneauBoutons.add(boutonSupprimer);
         panneauBoutons.add(boutonRafraichir);
+        panneauBoutons.add(boutonRetour);
+
 
         // Actions
         boutonAjouter.addActionListener(e -> ajouterArticle());
