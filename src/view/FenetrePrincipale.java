@@ -5,6 +5,8 @@ import model.Panier;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FenetrePrincipale extends JFrame {
     private CardLayout cardLayout;
@@ -45,7 +47,10 @@ public class FenetrePrincipale extends JFrame {
             VuePanier vue = (VuePanier) panneauPrincipal.getComponent(2); // ou cast propre
             vue.mettreAJourPanier(this);
         }
-
+        else if (nomPage.equals(PAGE_HISTORIQUE)) {
+            VueHistorique vue = (VueHistorique) panneauPrincipal.getComponent(3);
+            vue.mettreAJourHistorique(this);
+        }
 
     }
 
@@ -60,8 +65,18 @@ public class FenetrePrincipale extends JFrame {
     public Panier getPanier() {
         return panier;
     }
+    private List<Integer> commandesSession = new ArrayList<>();
+
+    public List<Integer> getCommandesSession() {
+        return commandesSession;
+    }
+
+    public void ajouterCommandeSession(int idCommande) {
+        commandesSession.add(idCommande);
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new FenetrePrincipale().setVisible(true));
     }
+
 }

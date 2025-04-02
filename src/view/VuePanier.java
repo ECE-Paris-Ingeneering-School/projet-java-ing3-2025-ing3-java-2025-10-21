@@ -33,6 +33,8 @@ public class VuePanier extends JPanel {
 
             Commande commande = new Commande(client.getId());
             new CommandeDAO().ajouterCommande(commande);
+            parent.ajouterCommandeSession(commande.getId());
+
 
             for (Article a : parent.getPanier().getArticles()) {
                 int qte = parent.getPanier().getQuantite(a);
@@ -53,6 +55,8 @@ public class VuePanier extends JPanel {
 
         add(new JScrollPane(textePanier), BorderLayout.CENTER);
         add(bas, BorderLayout.SOUTH);
+
+
     }
 
     public void mettreAJourPanier(FenetrePrincipale parent) {
